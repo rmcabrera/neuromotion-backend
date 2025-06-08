@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: db-doctores-config
+  namespace: ms-app
+data:
+  MYSQL_ROOT_PASSWORD: root
+  MYSQL_DATABASE: doctores_db

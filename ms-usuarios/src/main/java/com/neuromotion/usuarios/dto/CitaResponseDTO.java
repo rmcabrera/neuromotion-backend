@@ -11,6 +11,7 @@ public class CitaResponseDTO {
     private String motivo;
 
     private Long usuarioId;
+    private String usuarioNombre;
 
     private Long doctorId;
     private String doctorNombre;

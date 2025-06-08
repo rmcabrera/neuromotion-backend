@@ -1,5 +1,13 @@
 version: '3.8'
 
+networks:
+  ms-network:
+    name: ms-network
+
+volumes:
+  usuarios_data:
+  doctores_data:
+
 services:
   mysql-usuarios:
     image: mysql:8
@@ -12,6 +20,14 @@ services:
       - "3307:3306"
     volumes:
       - usuarios_data:/var/lib/mysql
+    networks:
+      - ms-network
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping","-h","localhost"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
 
   mysql-doctores:
     image: mysql:8
@@ -24,7 +40,64 @@ services:
       - "3308:3306"
     volumes:
       - doctores_data:/var/lib/mysql
+    networks:
+      - ms-network
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping","-h","localhost"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
 
-volumes:
-  usuarios_data:
-  doctores_data:
+  ms-doctores:
+    image: mcabrerac/ms-doctores:v2
+    container_name: ms-doctores
+    depends_on:
+      mysql-doctores:
+        condition: service_healthy
+    ports:
+      - "8082:8082"
+    environment:
+      - APP_NAME=ms-doctores
+      - SERVER_PORT=8082
+      - DB_URL=jdbc:mysql://mysql-doctores:3306/doctores_db?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      - DB_USERNAME=root
+      - DB_PASSWORD=root
+      - DB_DRIVER=com.mysql.cj.jdbc.Driver
+      - DDL_AUTO=update
+      - DB_PLATFORM=org.hibernate.dialect.MySQL8Dialect
+    networks:
+      - ms-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8082/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+
+  ms-usuarios:
+    image: mcabrerac/ms-usuarios:v2
+    container_name: ms-usuarios
+    depends_on:
+      mysql-usuarios:
+        condition: service_healthy
+    ports:
+      - "8081:8081"
+    environment:
+      - APP_NAME=ms-usuarios
+      - SERVER_PORT=8081
+      - DB_URL=jdbc:mysql://mysql-usuarios:3306/usuarios_db?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      - DB_USERNAME=root
+      - DB_PASSWORD=root
+      - DB_DRIVER=com.mysql.cj.jdbc.Driver
+      - DDL_AUTO=update
+      - DB_PLATFORM=org.hibernate.dialect.MySQL8Dialect
+      - MS_DOCTORES_URL=http://ms-doctores:8082
+    networks:
+      - ms-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8081/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s

@@ -1,0 +1,11 @@
+FROM openjdk:17-jdk-slim
+
+WORKDIR /app
+
+COPY target/ms-doctores-0.0.1-SNAPSHOT.jar /app/ms-doctores.jar
+
+EXPOSE 8082
+
+RUN apt-get update && apt-get install -y curl
+
+ENTRYPOINT ["java", "-jar", "ms-doctores.jar"]

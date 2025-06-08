@@ -1,0 +1,95 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ms-doctores
+  namespace: ms-app
+  labels:
+    app: ms-doctores
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ms-doctores
+  template:
+    metadata:
+      labels:
+        app: ms-doctores
+    spec:
+      containers:
+        - name: ms-doctores
+          image: mcabrerac/ms-doctores:v2
+          ports:
+            - containerPort: 8082
+          env:
+            - name: DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: db-credentials
+                  key: MYSQL_USERNAME
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: db-credentials
+                  key: MYSQL_PASSWORD
+            - name: APP_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: ms-doctores-config
+                  key: APP_NAME
+            - name: SERVER_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: ms-doctores-config
+                  key: SERVER_PORT
+            - name: DB_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: ms-doctores-config
+                  key: DB_URL
+            - name: DB_DRIVER
+              valueFrom:
+                configMapKeyRef:
+                  name: ms-doctores-config
+                  key: DB_DRIVER
+            - name: DDL_AUTO
+              valueFrom:
+                configMapKeyRef:
+                  name: ms-doctores-config
+                  key: DDL_AUTO
+            - name: DB_PLATFORM
+              valueFrom:
+                configMapKeyRef:
+                  name: ms-doctores-config
+                  key: DB_PLATFORM
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: POD_ID
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "500m"
+            limits:
+              memory: "800Mi"
+              cpu: "800m"
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness  # Cambiar si no existe
+              port: 8082
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness  # Cambiar si no existe
+              port: 8082
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+      restartPolicy: Always

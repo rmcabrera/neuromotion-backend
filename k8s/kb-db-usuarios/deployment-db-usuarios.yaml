@@ -21,14 +21,14 @@ spec:
           env:
             - name: MYSQL_ROOT_PASSWORD
               valueFrom:
-                configMapKeyRef:
-                  name: db-usuarios-config
+                secretKeyRef:
+                  name: db-credentials
                   key: MYSQL_ROOT_PASSWORD
             - name: MYSQL_DATABASE
               valueFrom:
-                configMapKeyRef:
-                  name: db-usuarios-config
-                  key: MYSQL_DATABASE
+                secretKeyRef:
+                  name: db-credentials
+                  key: MYSQL_DATABASE_USUARIOS
           volumeMounts:
             - name: mysql-storage
               mountPath: /var/lib/mysql

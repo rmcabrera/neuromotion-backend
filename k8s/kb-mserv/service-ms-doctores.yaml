@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ms-doctores-service
+  namespace: ms-app
+spec:
+  selector:
+    app: ms-doctores
+  ports:
+    - protocol: TCP
+      port: 8082
+      targetPort: 8082
+      nodePort: 30082
+  type: NodePort

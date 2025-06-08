@@ -7,6 +7,5 @@ spec:
   selector:
     app: mysql-doctores
   ports:
-    - port: 3308
+    - port: 3306
       targetPort: 3306
-  clusterIP: None

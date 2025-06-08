@@ -1,0 +1,99 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ms-usuarios-deployment
+  namespace: ms-app
+  labels:
+    app: ms-usuarios
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ms-usuarios
+  template:
+    metadata:
+      labels:
+        app: ms-usuarios
+    spec:
+      containers:
+        - name: ms-usuarios
+          image: mcabrerac/ms-usuarios:v2
+          ports:
+            - containerPort: 8081
+          env:
+            - name: DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: db-credentials
+                  key: MYSQL_USERNAME
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: db-credentials
+                  key: MYSQL_ROOT_PASSWORD
+            - name: APP_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: ms-usuarios-config
+                  key: APP_NAME
+            - name: SERVER_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: ms-usuarios-config
+                  key: SERVER_PORT
+            - name: DB_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: ms-usuarios-config
+                  key: DB_URL
+            - name: DB_DRIVER
+              valueFrom:
+                configMapKeyRef:
+                  name: ms-usuarios-config
+                  key: DB_DRIVER
+            - name: DDL_AUTO
+              valueFrom:
+                configMapKeyRef:
+                  name: ms-usuarios-config
+                  key: DDL_AUTO
+            - name: DB_PLATFORM
+              valueFrom:
+                configMapKeyRef:
+                  name: ms-usuarios-config
+                  key: DB_PLATFORM
+            - name: MS_DOCTORES_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: ms-usuarios-config
+                  key: MS_DOCTORES_URL
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: POD_ID
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "500m"
+            limits:
+              memory: "800Mi"
+              cpu: "800m"
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: 8081
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: 8081
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3

@@ -1,0 +1,6 @@
+apiVersion: v2
+name: mysql-usuarios
+description: Helm chart para el despliegue de la base de datos MySQL del microservicio ms-usuarios
+type: application
+version: 0.1.0
+appVersion: "8"

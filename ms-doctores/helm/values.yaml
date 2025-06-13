@@ -1,0 +1,28 @@
+replicaCount: 1
+
+image:
+  repository: mcabrerac/ms-doctores
+  tag: v2
+  pullPolicy: IfNotPresent
+
+service:
+  type: NodePort
+  port: 8082
+  nodePort: 30082
+
+resources:
+  limits:
+    cpu: 800m
+    memory: 800Mi
+  requests:
+    cpu: 500m
+    memory: 256Mi
+
+config:
+  APP_NAME: ms-doctores
+  SERVER_PORT: "8082"
+  DB_URL: jdbc:mysql://mysql-doctores:3306/doctores_db?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+  DB_DRIVER: com.mysql.cj.jdbc.Driver
+  DDL_AUTO: update
+  DB_PLATFORM: org.hibernate.dialect.MySQL8Dialect
+  ACTUATOR_PORT: "8082"

@@ -1,0 +1,5 @@
+apiVersion: v2
+name: mysql-doctores
+description: MySQL database for ms-doctores
+version: 0.1.0
+appVersion: "8.0"

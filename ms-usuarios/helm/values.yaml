@@ -1,0 +1,29 @@
+replicaCount: 1
+
+image:
+  repository: mcabrerac/ms-usuarios
+  tag: v2
+  pullPolicy: IfNotPresent
+
+service:
+  type: NodePort
+  port: 8081
+  nodePort: 30081
+
+resources:
+  limits:
+    cpu: 800m
+    memory: 800Mi
+  requests:
+    cpu: 500m
+    memory: 256Mi
+
+config:
+  APP_NAME: ms-usuarios
+  SERVER_PORT: "8081"
+  DB_URL: jdbc:mysql://mysql-usuarios:3306/usuarios_db?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+  DB_DRIVER: com.mysql.cj.jdbc.Driver
+  DDL_AUTO: update
+  DB_PLATFORM: org.hibernate.dialect.MySQL8Dialect
+  MS_DOCTORES_URL: http://ms-doctores-service:8082
+  ACTUATOR_PORT: "8081"

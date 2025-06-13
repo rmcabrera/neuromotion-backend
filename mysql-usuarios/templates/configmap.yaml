@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: db-usuarios-config
+  namespace: {{ .Values.namespace }}
+data:
+  MYSQL_DATABASE: {{ .Values.mysql.database }}

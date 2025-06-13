@@ -1,0 +1,17 @@
+namespace: ms-app
+
+mysql:
+  image: mysql:8
+  database: doctores_db
+
+resources:
+  requests:
+    memory: 256Mi
+    cpu: 250m
+  limits:
+    memory: 512Mi
+    cpu: 500m
+
+storage:
+  size: 1Gi
+  path: /data/mysql-doctores

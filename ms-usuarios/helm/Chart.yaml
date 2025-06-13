@@ -1,0 +1,5 @@
+apiVersion: v2
+name: ms-usuarios
+description: Microservicio ms-usuarios
+version: 1.0.0
+appVersion: "v2"

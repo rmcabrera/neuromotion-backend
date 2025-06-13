@@ -1,0 +1,5 @@
+apiVersion: v2
+name: ms-doctores
+description: Microservicio ms-doctores
+version: 1.0.0
+appVersion: "v2"

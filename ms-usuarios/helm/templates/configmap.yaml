@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Chart.Name }}-config
+data:
+  APP_NAME: {{ .Values.config.APP_NAME }}
+  SERVER_PORT: {{ .Values.config.SERVER_PORT  | quote }}
+  DB_URL: {{ .Values.config.DB_URL }}
+  DB_DRIVER: {{ .Values.config.DB_DRIVER }}
+  DDL_AUTO: {{ .Values.config.DDL_AUTO }}
+  DB_PLATFORM: {{ .Values.config.DB_PLATFORM }}
+  MS_DOCTORES_URL: {{ .Values.config.MS_DOCTORES_URL }}
+  ACTUATOR_PORT: {{ .Values.config.ACTUATOR_PORT  | quote }}

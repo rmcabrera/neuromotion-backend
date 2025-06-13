@@ -26,9 +26,9 @@ spec:
                   key: MYSQL_ROOT_PASSWORD
             - name: MYSQL_DATABASE
               valueFrom:
-                secretKeyRef:
-                  name: db-credentials
-                  key: MYSQL_DATABASE_USUARIOS
+                configMapKeyRef:
+                  name: db-usuarios-config
+                  key: MYSQL_DATABASE
           volumeMounts:
             - name: mysql-storage
               mountPath: /var/lib/mysql

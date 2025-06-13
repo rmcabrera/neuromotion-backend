@@ -4,4 +4,4 @@ metadata:
   name: db-doctores-config
   namespace: ms-app
 data:
-  DB_NAME: doctores_db
+  MYSQL_DATABASE: doctores_db

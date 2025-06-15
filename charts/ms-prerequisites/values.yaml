@@ -1,0 +1,6 @@
+namespace: ms-app
+
+dbCredentials:
+  rootPassword: YWRtaW4=  # base64 de admin
+  username: cm9vdA==      # base64 de root
+  password: cm9vdA==      # base64 de root

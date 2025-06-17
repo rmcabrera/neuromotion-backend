@@ -69,6 +69,8 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: status.podIP
+            - name: SPRING_CLOUD_KUBERNETES_DISCOVERY_ENABLED
+              value: "false"
           resources:
             requests:
               memory: "256Mi"

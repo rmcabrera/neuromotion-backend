@@ -27,3 +27,4 @@ config:
   DB_PLATFORM: org.hibernate.dialect.MySQL8Dialect
   MS_DOCTORES_URL: http://ms-doctores-service:8082
   ACTUATOR_PORT: "8081"
+  SPRING_CLOUD_KUBERNETES_DISCOVERY_ENABLED: "false"

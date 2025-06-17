@@ -66,6 +66,8 @@ spec:
                 configMapKeyRef:
                   name: {{ .Chart.Name }}-config
                   key: MS_DOCTORES_URL
+            - name: SPRING_CLOUD_KUBERNETES_DISCOVERY_ENABLED
+              value: "false"
           resources:
             requests:
               memory: {{ .Values.resources.requests.memory }}

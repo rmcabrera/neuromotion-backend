@@ -1,24 +1,24 @@
 {
   "/api/doctores": {
-    "target": "http://127.0.0.1:54927",
+    "target": "http://127.0.0.1:57654",
     "secure": false,
     "changeOrigin": true,
     "logLevel": "debug"
   },
   "/api/especialidades": {
-    "target": "http://127.0.0.1:54927",
+    "target": "http://127.0.0.1:57654",
     "secure": false,
     "changeOrigin": true,
     "logLevel": "debug"
   },
   "/api/usuarios": {
-    "target": "http://127.0.0.1:54934",
+    "target": "http://127.0.0.1:57619",
     "secure": false,
     "changeOrigin": true,
     "logLevel": "debug"
   },
   "/api/citas": {
-    "target": "http://127.0.0.1:54934",
+    "target": "http://127.0.0.1:57619",
     "secure": false,
     "changeOrigin": true,
     "logLevel": "debug"

@@ -21,7 +21,8 @@
     [userToEdit]="userToEdit"
     (closeModal)="onUserModalClose()" 
     (userSaved)="onUserSaved($event)"
-    (userDeleted)="onUserDeleted($event)">
+    (userDeleted)="onUserDeleted($event)"
+    (userError)="onUserError($event)">
   </app-user-modal>
 
   <div class="section">
@@ -43,7 +44,8 @@
     [doctorToEdit]="doctorToEdit"
     (closeModal)="onDoctorModalClose()"
     (doctorSaved)="onDoctorSaved($event)"
-    (doctorDeleted)="onDoctorDeleted($event)">
+    (doctorDeleted)="onDoctorDeleted($event)"
+    (doctorError)="onDoctorError($event)">
   </app-doctor-modal>
 
   <div class="section">

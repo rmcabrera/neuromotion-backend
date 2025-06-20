@@ -218,4 +218,12 @@ export class NeuromotionDashboardComponent implements OnInit {
   onCitasListModalClose(): void {
     this.showCitasListModal = false;
   }
+
+  onDoctorError(message: string): void {
+    this.openConfirmationModal(message);
+  }
+
+  onUserError(message: string): void {
+    this.openConfirmationModal(message);
+  }
 }

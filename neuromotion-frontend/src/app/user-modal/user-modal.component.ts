@@ -17,6 +17,7 @@ export class UserModalComponent {
   @Output() closeModal = new EventEmitter<void>();
   @Output() userSaved = new EventEmitter<Usuario>();
   @Output() userDeleted = new EventEmitter<number>();
+  @Output() userError = new EventEmitter<string>(); // New output for error messages
 
   newUsuario: Usuario = { nombre: '', apellido: '', email: '', telefono: '' };
   isEditMode: boolean = false;
@@ -63,7 +64,12 @@ export class UserModalComponent {
           this.resetForm();
           this.closeModal.emit();
         },
-        (error: any) => console.error('Error deleting user:', error)
+        (error: any) => {
+          console.error('Error deleting user:', error);
+          const errorMessage = error.error?.message || 'Error desconocido al eliminar el usuario.';
+          this.userError.emit(errorMessage);
+          this.closeModal.emit(); // Close modal even on error
+        }
       );
     }
   }

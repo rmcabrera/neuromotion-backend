@@ -39,8 +39,8 @@
           </div>
         </div>
         <div class="modal-actions">
-          <button type="submit" [disabled]="userForm.invalid">{{ isEditMode ? 'Actualizar Usuario' : 'Guardar Usuario' }}</button>
-          <button type="button" class="delete-button" *ngIf="isEditMode" (click)="deleteUser()">Eliminar Usuario</button>
+          <button type="submit" [disabled]="userForm.invalid" class="modal-button">{{ isEditMode ? 'Actualizar Usuario' : 'Guardar Usuario' }}</button>
+          <button type="button" class="modal-button delete-button" *ngIf="isEditMode" (click)="deleteUser()">Eliminar Usuario</button>
         </div>
       </form>
     </div>

@@ -108,7 +108,14 @@
   background-color: #218838;
 }
 
-.modal-body button[type="submit"] {
+.modal-actions {
+  display: flex;
+  justify-content: flex-end; /* Align buttons to the right */
+  gap: 10px; /* Space between buttons */
+  margin-top: 20px;
+}
+
+.modal-button {
   background-color: #007bff;
   color: white;
   padding: 10px 15px;
@@ -116,17 +123,23 @@
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  align-self: flex-end;
-  margin-top: 10px;
 }
 
-.modal-body button[type="submit"]:hover {
+.modal-button:hover {
   background-color: #0056b3;
 }
 
-.modal-body button[type="submit"]:disabled {
+.modal-button:disabled {
   background-color: #cccccc;
   cursor: not-allowed;
+}
+
+.modal-button.delete-button {
+  background-color: #dc3545; /* Red color for delete button */
+}
+
+.modal-button.delete-button:hover {
+  background-color: #c82333; /* Darker red on hover */
 }
 
 .validation-message {

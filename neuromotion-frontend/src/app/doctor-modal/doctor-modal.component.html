@@ -47,8 +47,8 @@
           <div *ngIf="especialidad.errors?.['required'] || selectedEspecialidadIdForDoctor === 0">Debe seleccionar una especialidad.</div>
         </div>
         <div class="modal-actions">
-          <button type="submit" [disabled]="doctorForm.invalid || selectedEspecialidadIdForDoctor === 0">{{ isEditMode ? 'Actualizar Doctor' : 'Guardar Doctor' }}</button>
-          <button type="button" class="delete-button" *ngIf="isEditMode" (click)="deleteDoctor()">Eliminar Doctor</button>
+          <button type="submit" [disabled]="doctorForm.invalid || selectedEspecialidadIdForDoctor === 0" class="modal-button">{{ isEditMode ? 'Actualizar Doctor' : 'Guardar Doctor' }}</button>
+          <button type="button" class="modal-button delete-button" *ngIf="isEditMode" (click)="deleteDoctor()">Eliminar Doctor</button>
         </div>
       </form>
     </div>

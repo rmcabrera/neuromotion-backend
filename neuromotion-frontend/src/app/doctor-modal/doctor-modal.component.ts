@@ -20,6 +20,7 @@ export class DoctorModalComponent implements OnInit {
   @Output() closeModal = new EventEmitter<void>();
   @Output() doctorSaved = new EventEmitter<Doctor>();
   @Output() doctorDeleted = new EventEmitter<number>();
+  @Output() doctorError = new EventEmitter<string>(); // New output for error messages
 
   newDoctor: Doctor = { nombre: '', licencia: '', email: '', especialidad: { nombre: '' } };
   isEditMode: boolean = false;
@@ -90,7 +91,12 @@ export class DoctorModalComponent implements OnInit {
           this.resetForm();
           this.closeModal.emit();
         },
-        (error: any) => console.error('Error deleting doctor:', error)
+        (error: any) => {
+          console.error('Error deleting doctor:', error);
+          const errorMessage = error.error?.message || 'Error desconocido al eliminar el doctor.';
+          this.doctorError.emit(errorMessage);
+          this.closeModal.emit(); // Close modal even on error
+        }
       );
     }
   }

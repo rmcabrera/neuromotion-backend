@@ -10,3 +10,4 @@ data:
   DDL_AUTO: {{ .Values.config.DDL_AUTO }}
   DB_PLATFORM: {{ .Values.config.DB_PLATFORM }}
   ACTUATOR_PORT: {{ .Values.config.ACTUATOR_PORT | quote }}
+  MS_USUARIOS_URL: {{ .Values.config.MS_USUARIOS_URL }}

@@ -3,6 +3,11 @@ package com.neuromotion.usuarios.service;
 import com.neuromotion.usuarios.model.Usuario;
 import com.neuromotion.usuarios.repository.UsuarioRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.http.HttpStatus;
+import com.neuromotion.usuarios.dto.CitaResponseDTO; // Importar CitaResponseDTO
+import org.springframework.web.server.ResponseStatusException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Optional;
@@ -10,10 +15,14 @@ import java.util.Optional;
 @Service
 public class UsuarioServiceImpl implements UsuarioService {
 
-    private final UsuarioRepository usuarioRepository;
+    private static final Logger logger = LoggerFactory.getLogger(UsuarioServiceImpl.class);
 
-    public UsuarioServiceImpl(UsuarioRepository usuarioRepository) {
+    private final UsuarioRepository usuarioRepository;
+    private final CitaService citaService; // Inyectar CitaService
+
+    public UsuarioServiceImpl(UsuarioRepository usuarioRepository, CitaService citaService) {
         this.usuarioRepository = usuarioRepository;
+        this.citaService = citaService;
     }
 
     @Override
@@ -49,6 +58,23 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Override
     public void eliminarUsuario(Long id) {
+        logger.info("Attempting to delete user with ID: {}", id);
+        try {
+            // Verificar si el usuario tiene citas relacionadas
+            List<CitaResponseDTO> citasRelacionadas = citaService.listarPorUsuarioIdConDoctor(id);
+            if (!citasRelacionadas.isEmpty()) {
+                logger.warn("User with ID {} has {} related appointments. Deletion prevented.", id, citasRelacionadas.size());
+                throw new ResponseStatusException(HttpStatus.CONFLICT, "No se puede eliminar el usuario porque tiene citas relacionadas.");
+            }
+        } catch (ResponseStatusException e) {
+            throw e; // Re-throw if it's already a ResponseStatusException
+        } catch (Exception e) {
+            logger.error("Error checking for related appointments for user ID {}: {}", id, e.getMessage());
+            // Depending on desired behavior, you might throw a generic error or allow deletion if the check fails
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error al verificar citas relacionadas para el usuario.", e);
+        }
+
         usuarioRepository.deleteById(id);
+        logger.info("User with ID {} deleted successfully.", id);
     }
 }

@@ -27,3 +27,4 @@ config:
   DB_PLATFORM: org.hibernate.dialect.MySQL8Dialect
   ACTUATOR_PORT: "8082"
   SPRING_CLOUD_KUBERNETES_DISCOVERY_ENABLED: "false"
+  MS_USUARIOS_URL: http://ms-usuarios-service:8081

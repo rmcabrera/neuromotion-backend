@@ -5,8 +5,14 @@ import com.neuromotion.doctores.model.Doctor;
 import com.neuromotion.doctores.model.Especialidad;
 import com.neuromotion.doctores.repository.DoctorRepository;
 import com.neuromotion.doctores.repository.EspecialidadRepository;
+import com.neuromotion.doctores.feign.CitaFeignClient; // Importar Feign Client
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.http.HttpStatus;
+import com.neuromotion.doctores.dto.CitaResponseDTO; // Importar CitaResponseDTO
+import org.springframework.web.server.ResponseStatusException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,11 +20,16 @@ import java.util.Optional;
 @Service
 public class DoctorServiceImpl implements DoctorService {
 
+    private static final Logger logger = LoggerFactory.getLogger(DoctorServiceImpl.class);
+
     @Autowired
     private DoctorRepository doctorRepository;
 
     @Autowired
     private EspecialidadRepository especialidadRepository;
+
+    @Autowired
+    private CitaFeignClient citaFeignClient; // Inyectar Feign Client
 
     @Override
     public List<Doctor> listarDoctores() {
@@ -102,7 +113,23 @@ public class DoctorServiceImpl implements DoctorService {
 
     @Override
     public void eliminarDoctor(Long id) {
+        logger.info("Attempting to delete doctor with ID: {}", id);
+        try {
+            // Verificar si el doctor tiene citas relacionadas
+            List<CitaResponseDTO> citasRelacionadas = citaFeignClient.listarPorDoctor(id);
+            if (!citasRelacionadas.isEmpty()) {
+                logger.warn("Doctor with ID {} has {} related appointments. Deletion prevented.", id, citasRelacionadas.size());
+                throw new ResponseStatusException(HttpStatus.CONFLICT, "No se puede eliminar el doctor porque tiene citas relacionadas.");
+            }
+        } catch (ResponseStatusException e) {
+            throw e; // Re-throw if it's already a ResponseStatusException
+        } catch (Exception e) {
+            logger.error("Error checking for related appointments for doctor ID {}: {}", id, e.getMessage());
+            // Depending on desired behavior, you might throw a generic error or allow deletion if the check fails
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error al verificar citas relacionadas para el doctor.", e);
+        }
         doctorRepository.deleteById(id);
+        logger.info("Doctor with ID {} deleted successfully.", id);
     }
 
     @Override

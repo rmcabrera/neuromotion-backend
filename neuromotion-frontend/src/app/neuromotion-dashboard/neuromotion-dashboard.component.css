@@ -1,0 +1,170 @@
+.dashboard-container {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  max-width: 900px;
+  margin: 0 auto;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  color: #333;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+h2 {
+  color: #555;
+  border-bottom: 2px solid #eee;
+  padding-bottom: 10px;
+  margin-top: 20px; /* Reduced margin-top */
+  margin-bottom: 10px; /* Reduced margin-bottom */
+}
+
+h3, h4 {
+  display: none; /* Ocultar los títulos de los formularios anidados */
+}
+
+.section {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  margin-bottom: 15px; /* Reduced margin-bottom */
+}
+
+.form-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  flex-basis: 80px; /* Fixed width for labels */
+  text-align: right;
+  padding-right: 10px;
+}
+
+.form-group input[type="date"],
+.form-group input[type="time"] {
+  flex: 1;
+  min-width: 120px;
+}
+
+.form-group.nested-form-group {
+  margin-top: 10px;
+  padding-left: 0; /* Eliminar padding-left */
+  border-left: none; /* Eliminar borde izquierdo */
+}
+
+.add-form {
+  background-color: #f0f8ff;
+  border: 1px solid #e0f0ff;
+  padding: 15px;
+  border-radius: 5px;
+  margin-top: 15px;
+  margin-bottom: 20px;
+}
+
+.add-form.nested-add-form {
+  background-color: #f8fcfd;
+  border: 1px solid #e8f2f5;
+  padding: 10px;
+  margin-top: 10px;
+  margin-left: 0; /* Eliminar margin-left */
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+form .form-group:last-of-type {
+  display: flex;
+  justify-content: flex-end; /* Align buttons to the right */
+  gap: 10px; /* Space between buttons */
+  margin-top: 20px; /* Add some top margin for buttons */
+}
+
+input[type="text"],
+input[type="email"],
+input[type="date"],
+input[type="time"],
+select,
+textarea {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  width: 100%; /* Full width within its container */
+  box-sizing: border-box; /* Include padding and border in the element's total width and height */
+}
+
+button {
+  padding: 10px 15px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  /* align-self: flex-start; Removed to allow flex-end on parent form-group */
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+.create-cita-button {
+  background-color: #28a745;
+}
+
+.create-cita-button {
+  background-color: #28a745;
+  margin-right: 10px; /* Add some space between buttons */
+}
+
+.create-cita-button:hover {
+  background-color: #218838;
+}
+
+.new-cita-button {
+  background-color: #6c757d; /* Grey color for new cita button */
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.new-cita-button:hover {
+  background-color: #5a6268;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin-top: 0; /* Eliminar margin-top */
+}
+
+.view-citas-button {
+  background-color: #17a2b8; /* Info blue color */
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.view-citas-button:hover {
+  background-color: #138496;
+}
+
+li {
+  display: none; /* Ocultar todas las listas de elementos registrados */
+}

@@ -1,0 +1,48 @@
+<div class="modal-overlay" *ngIf="showModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>{{ isEditMode ? 'Editar Usuario' : 'Agregar Nuevo Usuario' }}</h2>
+      <button class="close-button" (click)="onClose()">×</button>
+    </div>
+    <div class="modal-body">
+      <form #userForm="ngForm" (ngSubmit)="saveUser()">
+        <div class="form-group">
+          <label for="nombre">Nombre:</label>
+          <input type="text" id="nombre" [(ngModel)]="newUsuario.nombre" name="nombre" placeholder="Nombre" required #nombre="ngModel">
+          <div *ngIf="nombre.invalid && (nombre.dirty || nombre.touched)" class="validation-message">
+            <div *ngIf="nombre.errors?.['required']">El nombre es obligatorio.</div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="apellido">Apellido:</label>
+          <input type="text" id="apellido" [(ngModel)]="newUsuario.apellido" name="apellido" placeholder="Apellido" required #apellido="ngModel">
+          <div *ngIf="apellido.invalid && (apellido.dirty || apellido.touched)" class="validation-message">
+            <div *ngIf="apellido.errors?.['required']">El apellido es obligatorio.</div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email:</label>
+          <input type="email" id="email" [(ngModel)]="newUsuario.email" name="email" placeholder="Email" required email #email="ngModel">
+          <div *ngIf="email.invalid && (email.dirty || email.touched)" class="validation-message">
+            <div *ngIf="email.errors?.['required']">El email es obligatorio.</div>
+            <div *ngIf="email.errors?.['email']">Debe ser un email válido.</div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="telefono">Teléfono:</label>
+          <input type="text" id="telefono" [(ngModel)]="newUsuario.telefono" name="telefono" placeholder="Teléfono" required #telefono="ngModel">
+          <div *ngIf="telefono.invalid && (telefono.dirty || telefono.touched)" class="validation-message">
+            <div *ngIf="telefono.errors?.['required']">El teléfono es obligatorio.</div>
+          </div>
+        </div>
+        <div class="modal-actions">
+          <button type="submit" [disabled]="userForm.invalid">{{ isEditMode ? 'Actualizar Usuario' : 'Guardar Usuario' }}</button>
+          <button type="button" class="delete-button" *ngIf="isEditMode" (click)="deleteUser()">Eliminar Usuario</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

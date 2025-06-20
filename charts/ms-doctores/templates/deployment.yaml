@@ -69,10 +69,20 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: status.podIP
+            - name: MS_USUARIOS_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Chart.Name }}-config
+                  key: MS_USUARIOS_URL
             - name: SPRING_CLOUD_KUBERNETES_DISCOVERY_ENABLED
               value: "false"
           resources:
-            {{- toYaml .Values.resources | nindent 12 }}
+            requests:
+              memory: {{ .Values.resources.requests.memory }}
+              cpu: {{ .Values.resources.requests.cpu }}
+            limits:
+              memory: {{ .Values.resources.limits.memory }}
+              cpu: {{ .Values.resources.limits.cpu }}
           livenessProbe:
             httpGet:
               path: /actuator/health/liveness

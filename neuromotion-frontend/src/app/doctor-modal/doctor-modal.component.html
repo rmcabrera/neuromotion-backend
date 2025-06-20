@@ -1,0 +1,62 @@
+<div class="modal-overlay" *ngIf="showModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>{{ isEditMode ? 'Editar Doctor' : 'Agregar Nuevo Doctor' }}</h2>
+      <button class="close-button" (click)="onClose()">×</button>
+    </div>
+    <div class="modal-body">
+      <form #doctorForm="ngForm" (ngSubmit)="saveDoctor()">
+        <div class="form-group">
+          <label for="nombre">Nombre:</label>
+          <input type="text" id="nombre" [(ngModel)]="newDoctor.nombre" name="nombre" placeholder="Nombre" required #nombre="ngModel">
+          <div *ngIf="nombre.invalid && (nombre.dirty || nombre.touched)" class="validation-message">
+            <div *ngIf="nombre.errors?.['required']">El nombre del doctor es obligatorio.</div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="licencia">Licencia:</label>
+          <input type="text" id="licencia" [(ngModel)]="newDoctor.licencia" name="licencia" placeholder="Licencia" required #licencia="ngModel">
+          <div *ngIf="licencia.invalid && (licencia.dirty || licencia.touched)" class="validation-message">
+            <div *ngIf="licencia.errors?.['required']">La licencia es obligatoria.</div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email:</label>
+          <input type="email" id="email" [(ngModel)]="newDoctor.email" name="email" placeholder="Email" required email #email="ngModel">
+          <div *ngIf="email.invalid && (email.dirty || email.touched)" class="validation-message">
+            <div *ngIf="email.errors?.['required']">El email es obligatorio.</div>
+            <div *ngIf="email.errors?.['email']">Debe ser un email válido.</div>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label for="especialidad">Especialidad:</label>
+          <div class="especialidad-input-group">
+            <select id="especialidad" [(ngModel)]="selectedEspecialidadIdForDoctor" name="especialidad" required #especialidad="ngModel">
+              <option [ngValue]="0" disabled>Seleccionar Especialidad</option>
+              <option *ngFor="let especialidad of especialidades" [ngValue]="especialidad.id">
+                {{ especialidad.nombre }}
+              </option>
+            </select>
+            <button type="button" class="add-especialidad-button" (click)="openEspecialidadModal()">+</button>
+          </div>
+        </div>
+        <div *ngIf="especialidad.invalid && (especialidad.dirty || especialidad.touched)" class="validation-message">
+          <div *ngIf="especialidad.errors?.['required'] || selectedEspecialidadIdForDoctor === 0">Debe seleccionar una especialidad.</div>
+        </div>
+        <div class="modal-actions">
+          <button type="submit" [disabled]="doctorForm.invalid || selectedEspecialidadIdForDoctor === 0">{{ isEditMode ? 'Actualizar Doctor' : 'Guardar Doctor' }}</button>
+          <button type="button" class="delete-button" *ngIf="isEditMode" (click)="deleteDoctor()">Eliminar Doctor</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<app-especialidad-modal 
+  [showModal]="showEspecialidadModal" 
+  (closeModal)="onEspecialidadModalClose()" 
+  (especialidadSaved)="onEspecialidadSaved($event)">
+</app-especialidad-modal>

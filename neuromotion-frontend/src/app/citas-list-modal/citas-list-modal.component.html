@@ -1,0 +1,39 @@
+<div class="modal-overlay" *ngIf="showModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>Lista de Citas</h2>
+      <button class="close-button" (click)="onClose()">×</button>
+    </div>
+    <div class="modal-body">
+      <div *ngIf="citas.length === 0; else citasTable">
+        <p>No hay citas registradas.</p>
+      </div>
+      <ng-template #citasTable>
+        <div class="table-scroll-container">
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Usuario</th>
+                <th>Doctor</th>
+                <th>Especialidad del Doctor</th>
+                <th>Fecha y Hora</th>
+                <th>Motivo</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let cita of citas">
+                <td>{{ cita.id }}</td>
+                <td>{{ cita.usuarioNombre }}</td>
+                <td>{{ cita.doctorNombre }}</td>
+                <td>{{ cita.doctorEspecialidad }}</td>
+                <td>{{ cita.fechaHora | date:'medium' }}</td>
+                <td>{{ cita.motivo }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+</div>

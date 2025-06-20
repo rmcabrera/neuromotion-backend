@@ -1,0 +1,20 @@
+<div class="modal-overlay" *ngIf="showModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>Agregar Nueva Especialidad</h2>
+      <button class="close-button" (click)="onClose()">×</button>
+    </div>
+    <div class="modal-body">
+      <form #especialidadForm="ngForm" (ngSubmit)="addEspecialidad()">
+        <div class="form-group">
+          <label for="newEspecialidadNombre">Nombre:</label>
+          <input type="text" id="newEspecialidadNombre" [(ngModel)]="newEspecialidad.nombre" name="newEspecialidadNombre" placeholder="Nombre de Especialidad" required #newEspecialidadNombre="ngModel">
+          <div *ngIf="newEspecialidadNombre.invalid && (newEspecialidadNombre.dirty || newEspecialidadNombre.touched)" class="validation-message">
+            <div *ngIf="newEspecialidadNombre.errors?.['required']">El nombre de la especialidad es obligatorio.</div>
+          </div>
+        </div>
+        <button type="submit" [disabled]="especialidadForm.invalid">Guardar Especialidad</button>
+      </form>
+    </div>
+  </div>
+</div>

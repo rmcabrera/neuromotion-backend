@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: neuromotion-frontend
+  namespace: ms-app
+  labels:
+    app: neuromotion-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: neuromotion-frontend
+  template:
+    metadata:
+      labels:
+        app: neuromotion-frontend
+    spec:
+      containers:
+        - name: neuromotion-frontend
+          image: mcabrerac/neuromotion-frontend:v1 
+          ports:
+            - containerPort: 80
+          imagePullPolicy: IfNotPresent 

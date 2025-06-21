@@ -17,7 +17,7 @@ export class UserModalComponent {
   @Output() closeModal = new EventEmitter<void>();
   @Output() userSaved = new EventEmitter<Usuario>();
   @Output() userDeleted = new EventEmitter<number>();
-  @Output() userError = new EventEmitter<string>(); // New output for error messages
+  @Output() userError = new EventEmitter<string>(); 
 
   newUsuario: Usuario = { nombre: '', apellido: '', email: '', telefono: '' };
   isEditMode: boolean = false;
@@ -42,7 +42,16 @@ export class UserModalComponent {
           this.resetForm();
           this.closeModal.emit();
         },
-        (error: any) => console.error('Error updating user:', error)
+        (error: any) => {
+          console.error('Error updating user:', error);
+          let errorMessage = 'Error desconocido al actualizar el usuario.';
+          if (typeof error.error === 'string') {
+            errorMessage = error.error;
+          } else if (error.error?.message) {
+            errorMessage = error.error.message;
+          }
+          this.userError.emit(errorMessage);
+        }
       );
     } else {
       this.usuarioService.createUsuario(this.newUsuario).subscribe(
@@ -51,26 +60,24 @@ export class UserModalComponent {
           this.resetForm();
           this.closeModal.emit();
         },
-        (error: any) => console.error('Error creating user:', error)
+        (error: any) => {
+          console.error('Error creating user:', error);
+          let errorMessage = 'Error desconocido al crear el usuario.';
+          if (typeof error.error === 'string') {
+            errorMessage = error.error;
+          } else if (error.error?.message) {
+            errorMessage = error.error.message;
+          }
+          this.userError.emit(errorMessage);
+        }
       );
     }
   }
 
   deleteUser(): void {
     if (this.newUsuario.id) {
-      this.usuarioService.deleteUsuario(this.newUsuario.id).subscribe(
-        () => {
-          this.userDeleted.emit(this.newUsuario.id!);
-          this.resetForm();
-          this.closeModal.emit();
-        },
-        (error: any) => {
-          console.error('Error deleting user:', error);
-          const errorMessage = error.error?.message || 'Error desconocido al eliminar el usuario.';
-          this.userError.emit(errorMessage);
-          this.closeModal.emit(); // Close modal even on error
-        }
-      );
+      this.userDeleted.emit(this.newUsuario.id!);
+     
     }
   }
 

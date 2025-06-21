@@ -11,27 +11,28 @@ import { Cita } from '../models/cita.model';
 import { UserModalComponent } from '../user-modal/user-modal.component';
 import { DoctorModalComponent } from '../doctor-modal/doctor-modal.component';
 import { ConfirmationModalComponent } from '../confirmation-modal/confirmation-modal.component'; 
+import { DeleteConfirmationModalComponent } from '../delete-confirmation-modal/delete-confirmation-modal.component'; 
 import { CitasListModalComponent } from '../citas-list-modal/citas-list-modal.component'; 
 
 @Component({
   selector: 'app-neuromotion-dashboard',
   standalone: true,
-  imports: [CommonModule, FormsModule, UserModalComponent, DoctorModalComponent, ConfirmationModalComponent, CitasListModalComponent], 
+  imports: [CommonModule, FormsModule, UserModalComponent, DoctorModalComponent, ConfirmationModalComponent, DeleteConfirmationModalComponent, CitasListModalComponent], 
   templateUrl: './neuromotion-dashboard.component.html',
   styleUrl: './neuromotion-dashboard.component.css'
 })
 export class NeuromotionDashboardComponent implements OnInit {
-  // Doctores
+ 
   doctores: DoctorResponse[] = [];
   showAddDoctorModal: boolean = false;
   doctorToEdit: Doctor | null = null;
+  doctorToDeleteId: number | null = null; 
 
-  // Usuarios
   usuarios: Usuario[] = [];
   showAddUserModal: boolean = false;
   userToEdit: Usuario | null = null;
+  userToDeleteId: number | null = null; 
 
-  // Citas
   citas: Cita[] = [];
   newCita: Cita = { fechaHora: '', motivo: '', usuarioId: 0, doctorId: 0 };
   selectedUsuarioIdForCita: number = 0;
@@ -43,6 +44,11 @@ export class NeuromotionDashboardComponent implements OnInit {
   showConfirmationModal: boolean = false; 
   confirmationMessage: string = ''; 
   showCitasListModal: boolean = false; 
+  
+  showDeleteConfirmationModal: boolean = false; 
+  deleteConfirmationMessage: string = '';
+  isUserDelete: boolean = false; 
+  isDoctorDelete: boolean = false; 
 
   @ViewChild('citaForm') citaForm!: NgForm; 
 
@@ -62,7 +68,6 @@ export class NeuromotionDashboardComponent implements OnInit {
     this.loadCitas();
   }
 
-  // Métodos para Doctores
   loadDoctores(): void {
     this.doctorService.getDoctores().subscribe(
       data => this.doctores = data,
@@ -81,7 +86,7 @@ export class NeuromotionDashboardComponent implements OnInit {
 
   onDoctorModalClose(): void {
     this.showAddDoctorModal = false;
-    this.doctorToEdit = null; // Clear doctorToEdit when modal closes
+    this.doctorToEdit = null; 
   }
 
   onDoctorSaved(doctor: Doctor): void {
@@ -89,7 +94,41 @@ export class NeuromotionDashboardComponent implements OnInit {
   }
 
   onDoctorDeleted(doctorId: number): void {
-    this.loadDoctores();
+    this.doctorToDeleteId = doctorId;
+    this.isDoctorDelete = true; 
+    this.deleteConfirmationMessage = '¿Estás seguro de que quieres eliminar este doctor?';
+    this.showDeleteConfirmationModal = true;
+  }
+
+  onDoctorDeleteConfirmed(): void {
+    if (this.doctorToDeleteId !== null) {
+      this.doctorService.deleteDoctor(this.doctorToDeleteId).subscribe(
+        () => {
+          this.loadDoctores();
+          this.onDoctorModalClose(); 
+          this.doctorToDeleteId = null; 
+          this.isDoctorDelete = false; 
+          this.openConfirmationModal('Doctor eliminado exitosamente!'); 
+        },
+        error => {
+          console.error('Error deleting doctor:', error);
+          this.doctorToDeleteId = null; 
+          this.isDoctorDelete = false; 
+          if (error.status === 409) { 
+            this.openConfirmationModal('No se puede eliminar el doctor porque tiene citas relacionadas.');
+          } else {
+            this.openConfirmationModal('Error al eliminar el doctor.');
+          }
+        }
+      );
+    }
+    this.showDeleteConfirmationModal = false; 
+  }
+
+  onDoctorDeleteCancelled(): void {
+    this.doctorToDeleteId = null; 
+    this.isDoctorDelete = false; 
+    this.showDeleteConfirmationModal = false; 
   }
 
   private mapDoctorResponseToDoctor(doctorResponse: DoctorResponse): Doctor {
@@ -105,7 +144,6 @@ export class NeuromotionDashboardComponent implements OnInit {
     };
   }
 
-  // Métodos para Usuarios
   loadUsuarios(): void {
     this.usuarioService.getUsuarios().subscribe(
       data => this.usuarios = data,
@@ -124,7 +162,7 @@ export class NeuromotionDashboardComponent implements OnInit {
 
   onUserModalClose(): void {
     this.showAddUserModal = false;
-    this.userToEdit = null; // Clear userToEdit when modal closes
+    this.userToEdit = null; 
   }
 
   onUserSaved(user: Usuario): void {
@@ -132,10 +170,43 @@ export class NeuromotionDashboardComponent implements OnInit {
   }
 
   onUserDeleted(userId: number): void {
-    this.loadUsuarios();
+    this.userToDeleteId = userId;
+    this.isUserDelete = true; 
+    this.deleteConfirmationMessage = '¿Estás seguro de que quieres eliminar este usuario?';
+    this.showDeleteConfirmationModal = true;
   }
 
-  // Métodos para Citas
+  onUserDeleteConfirmed(): void {
+    if (this.userToDeleteId !== null) {
+      this.usuarioService.deleteUsuario(this.userToDeleteId).subscribe(
+        () => {
+          this.loadUsuarios();
+          this.onUserModalClose(); 
+          this.userToDeleteId = null; 
+          this.isUserDelete = false; 
+          this.openConfirmationModal('Usuario eliminado exitosamente!'); 
+        },
+        error => {
+          console.error('Error deleting user:', error);
+          this.userToDeleteId = null; 
+          this.isUserDelete = false; 
+          if (error.status === 409) { 
+            this.openConfirmationModal('No se puede eliminar el usuario porque tiene citas relacionadas.');
+          } else {
+            this.openConfirmationModal('Error al eliminar el usuario.');
+          }
+        }
+      );
+    }
+    this.showDeleteConfirmationModal = false; 
+  }
+
+  onUserDeleteCancelled(): void {
+    this.userToDeleteId = null; 
+    this.isUserDelete = false; 
+    this.showDeleteConfirmationModal = false; 
+  }
+
   loadCitas(): void {
     this.citaService.getCitas().subscribe(
       data => this.citas = data,
@@ -185,6 +256,7 @@ export class NeuromotionDashboardComponent implements OnInit {
     this.showConfirmationModal = true;
   }
 
+  
   onConfirmationModalClose(): void {
     this.showConfirmationModal = false;
   }
@@ -199,7 +271,7 @@ export class NeuromotionDashboardComponent implements OnInit {
     if (this.citaForm) {
       this.citaForm.resetForm();
     }
-    // Ensure select values are explicitly reset after form reset
+    
     this.selectedUsuarioIdForCita = 0;
     this.selectedDoctorIdForCita = 0;
   }

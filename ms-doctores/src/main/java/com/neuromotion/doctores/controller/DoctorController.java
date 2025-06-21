@@ -10,6 +10,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -103,8 +104,13 @@ public class DoctorController {
             })
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminarDoctor(@PathVariable Long id) {
-        doctorService.eliminarDoctor(id);
-        return ResponseEntity.noContent().build();
+        try {
+            doctorService.eliminarDoctor(id);
+            return ResponseEntity.noContent().build();
+        } catch (ResponseStatusException ex) {
+            
+            throw ex;
+        }
     }
 
     private DoctorResponseDTO mapToDTO(Doctor doctor) {

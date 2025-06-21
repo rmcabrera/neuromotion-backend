@@ -79,6 +79,15 @@
   (closeModal)="onConfirmationModalClose()">
 </app-confirmation-modal>
 
+<app-delete-confirmation-modal
+  [showModal]="showDeleteConfirmationModal"
+  [message]="deleteConfirmationMessage"
+  [isUserDelete]="isUserDelete"
+  [isDoctorDelete]="isDoctorDelete"
+  (confirmDelete)="isUserDelete ? onUserDeleteConfirmed() : onDoctorDeleteConfirmed()"
+  (cancelDelete)="isUserDelete ? onUserDeleteCancelled() : onDoctorDeleteCancelled()">
+</app-delete-confirmation-modal>
+
 <app-citas-list-modal
   [showModal]="showCitasListModal"
   (closeModal)="onCitasListModalClose()">

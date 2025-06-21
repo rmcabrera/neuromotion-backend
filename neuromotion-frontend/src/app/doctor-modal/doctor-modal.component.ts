@@ -20,7 +20,7 @@ export class DoctorModalComponent implements OnInit {
   @Output() closeModal = new EventEmitter<void>();
   @Output() doctorSaved = new EventEmitter<Doctor>();
   @Output() doctorDeleted = new EventEmitter<number>();
-  @Output() doctorError = new EventEmitter<string>(); // New output for error messages
+  @Output() doctorError = new EventEmitter<string>(); 
 
   newDoctor: Doctor = { nombre: '', licencia: '', email: '', especialidad: { nombre: '' } };
   isEditMode: boolean = false;
@@ -66,7 +66,16 @@ export class DoctorModalComponent implements OnInit {
             this.resetForm();
             this.closeModal.emit();
           },
-          (error: any) => console.error('Error updating doctor:', error)
+          (error: any) => {
+            console.error('Error updating doctor:', error);
+            let errorMessage = 'Error desconocido al actualizar el doctor.';
+            if (typeof error.error === 'string') {
+              errorMessage = error.error;
+            } else if (error.error?.message) {
+              errorMessage = error.error.message;
+            }
+            this.doctorError.emit(errorMessage);
+          }
         );
       } else {
         this.doctorService.createDoctor(this.newDoctor).subscribe(
@@ -75,29 +84,28 @@ export class DoctorModalComponent implements OnInit {
             this.resetForm();
             this.closeModal.emit();
           },
-          (error: any) => console.error('Error creating doctor:', error)
+          (error: any) => {
+            console.error('Error creating doctor:', error);
+            let errorMessage = 'Error desconocido al crear el doctor.';
+            if (typeof error.error === 'string') {
+              errorMessage = error.error;
+            } else if (error.error?.message) {
+              errorMessage = error.error.message;
+            }
+            this.doctorError.emit(errorMessage);
+          }
         );
       }
     } else {
-      console.error('No especialidad selected for doctor.');
+      const errorMessage = 'Por favor, selecciona una especialidad para el doctor.';
+      this.doctorError.emit(errorMessage);
     }
   }
 
   deleteDoctor(): void {
     if (this.newDoctor.id) {
-      this.doctorService.deleteDoctor(this.newDoctor.id).subscribe(
-        () => {
-          this.doctorDeleted.emit(this.newDoctor.id!);
-          this.resetForm();
-          this.closeModal.emit();
-        },
-        (error: any) => {
-          console.error('Error deleting doctor:', error);
-          const errorMessage = error.error?.message || 'Error desconocido al eliminar el doctor.';
-          this.doctorError.emit(errorMessage);
-          this.closeModal.emit(); // Close modal even on error
-        }
-      );
+      this.doctorDeleted.emit(this.newDoctor.id!);
+      
     }
   }
 

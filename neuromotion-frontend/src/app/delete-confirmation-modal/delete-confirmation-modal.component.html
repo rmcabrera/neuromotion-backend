@@ -1,0 +1,14 @@
+<div class="modal-overlay" *ngIf="showModal">
+  <div class="modal-content">
+    <div class="modal-body">
+      <div class="icon-container">?</div>
+      <h2 class="main-message">¿Estás seguro?</h2>
+      <p class="sub-message">¡No podrás revertir esto!</p>
+      <p class="dynamic-message">{{ message }}</p>
+      <div class="modal-actions">
+        <button class="confirm-button" (click)="onConfirm()">Sí, ¡eliminar!</button>
+        <button class="cancel-button" (click)="onCancel()">Cancelar</button>
+      </div>
+    </div>
+  </div>
+</div>

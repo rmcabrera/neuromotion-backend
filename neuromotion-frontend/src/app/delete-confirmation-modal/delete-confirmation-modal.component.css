@@ -33,8 +33,10 @@
   }
   
   .icon-container {
-    font-size: 4em; /* Large size for the icon */
+    font-size: 4em; /* Large size for the question mark */
+    color: #6c757d; /* Grey color */
     margin-bottom: 15px;
+    border: 2px solid #6c757d;
     border-radius: 50%;
     width: 80px;
     height: 80px;
@@ -43,11 +45,6 @@
     align-items: center;
     margin-left: auto;
     margin-right: auto;
-  }
-
-  .icon-container.checkmark {
-    color: #8bc34a; /* Green color for checkmark */
-    border: 2px solid #8bc34a;
   }
   
   .main-message {
@@ -76,17 +73,29 @@
     margin-top: 20px;
   }
   
-  .ok-button {
-    background-color: #87ceeb; /* Light blue color */
-    color: white;
+  .modal-actions button {
     padding: 10px 20px;
     border: none;
     border-radius: 4px;
     cursor: pointer;
     font-size: 1em;
-    min-width: 120px;
+    min-width: 120px; /* Ensure buttons have a minimum width */
   }
   
-  .ok-button:hover {
-    background-color: #6495ed; /* Darker blue on hover */
+  .confirm-button {
+    background-color: #dc3545; /* Red color */
+    color: white;
+  }
+  
+  .confirm-button:hover {
+    background-color: #c82333; /* Darker red on hover */
+  }
+  
+  .cancel-button {
+    background-color: #007bff; /* Blue color */
+    color: white;
+  }
+  
+  .cancel-button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
   }

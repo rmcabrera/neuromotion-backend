@@ -1,0 +1,39 @@
+replicaCount: 1
+
+image:
+  repository: mcabrerac/neuromotion-frontend
+  pullPolicy: IfNotPresent 
+  tag: "v1"
+
+service:
+  type: NodePort
+  port: 80
+  targetPort: 80
+  nodePort: 30080 
+
+ingress:
+  enabled: false
+  className: ""
+  annotations: {}
+  host: chart-example.local
+  paths:
+    - path: /
+      pathType: ImplementationSpecific
+
+resources: {}
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+serviceAccount:
+  create: false
+  name: ""
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80

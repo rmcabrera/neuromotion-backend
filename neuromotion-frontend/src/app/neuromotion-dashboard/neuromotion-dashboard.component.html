@@ -66,9 +66,11 @@
         <div *ngIf="motivo.errors?.['required']">El motivo de la cita es obligatorio.</div>
       </div>
 
-      <button type="submit" class="create-cita-button">Crear Cita ✅</button>
-      <button type="button" class="new-cita-button" (click)="newCitaForm()">Nueva Cita</button>
-      <button type="button" class="view-citas-button" (click)="openCitasListModal()">Ver Citas</button>
+      <div class="cita-buttons">
+        <button type="submit" class="create-cita-button">Crear Cita ✅</button>
+        <button type="button" class="new-cita-button" (click)="newCitaForm()">Nueva Cita</button>
+        <button type="button" class="view-citas-button" (click)="openCitasListModal()">Ver Citas</button>
+      </div>
     </form>
   </div>
 </div>

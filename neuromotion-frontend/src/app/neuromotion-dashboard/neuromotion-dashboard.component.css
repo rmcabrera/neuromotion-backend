@@ -83,11 +83,11 @@ form {
   gap: 10px;
 }
 
-form .form-group:last-of-type {
+.cita-buttons {
   display: flex;
-  justify-content: flex-end; /* Align buttons to the right */
-  gap: 10px; /* Space between buttons */
-  margin-top: 20px; /* Add some top margin for buttons */
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
 }
 
 input[type="text"],
@@ -124,7 +124,6 @@ button:hover {
 
 .create-cita-button {
   background-color: #28a745;
-  margin-right: 10px; /* Add some space between buttons */
 }
 
 .create-cita-button:hover {

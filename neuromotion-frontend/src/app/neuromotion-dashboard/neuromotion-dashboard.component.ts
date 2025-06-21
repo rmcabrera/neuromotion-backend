@@ -267,13 +267,17 @@ export class NeuromotionDashboardComponent implements OnInit {
 
   private resetCitaForm(): void {
     this.newCita = { fechaHora: '', motivo: '', usuarioId: 0, doctorId: 0 };
-    this.setDefaultDateTime();
-    if (this.citaForm) {
-      this.citaForm.resetForm();
-    }
-    
     this.selectedUsuarioIdForCita = 0;
     this.selectedDoctorIdForCita = 0;
+
+    if (this.citaForm) {
+      this.citaForm.resetForm();
+      setTimeout(() => {
+        this.setDefaultDateTime();
+      });
+    } else {
+      this.setDefaultDateTime();
+    }
   }
 
   private setDefaultDateTime(): void {

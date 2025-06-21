@@ -1,6 +1,6 @@
 # 🧠 Neuromotion Helm Charts
 
-Repositorio de Helm Charts para desplegar los microservicios de **Neuromotion** en Kubernetes.
+Repositorio de Helm Charts para desplegar los microservicios y el frontend de **Neuromotion** en Kubernetes.
 
 ---
 
@@ -13,6 +13,7 @@ Repositorio de Helm Charts para desplegar los microservicios de **Neuromotion** 
 | `mysql-usuarios`        | 0.1.0   | 8      | Base de datos MySQL para el microservicio `ms-usuarios`      |
 | `ms-doctores`           | 1.0.0   | v2     | Microservicio Spring Boot `ms-doctores`                      |
 | `ms-usuarios`           | 1.0.0   | v2     | Microservicio Spring Boot `ms-usuarios`                      |
+| `neuromotion-frontend`  | 0.1.0   | v1     | Frontend de Neuromotion (Angular)                            |
 
 ---
 
@@ -51,6 +52,24 @@ helm install ms-doctores neuromotion/ms-doctores -n ms-app
 helm install ms-usuarios neuromotion/ms-usuarios -n ms-app
 ```
 
+### Paso 5: Instalar el Frontend
+
+Instala el frontend de Neuromotion.
+
+```bash
+helm install neuromotion-frontend neuromotion/neuromotion-frontend -n ms-app
+```
+
+---
+
+### Paso 6: Acceder al Frontend
+
+Una vez desplegado el frontend, puedes acceder a él a través de Minikube:
+
+```bash
+minikube service neuromotion-frontend-service -n ms-app
+```
+
 ---
 
 ## 🗑️ Desinstalación
@@ -60,7 +79,29 @@ Para desinstalar todos los charts y limpiar los recursos:
 ```bash
 helm uninstall ms-doctores -n ms-app
 helm uninstall ms-usuarios -n ms-app
+helm uninstall neuromotion-frontend -n ms-app
 helm uninstall mysql-doctores -n ms-app
 helm uninstall mysql-usuarios -n ms-app
+kubectl delete pvc --all -n ms-app
+kubectl delete pv --all
 helm uninstall ms-prerequisites
+```
 
+### Limpieza adicional (Opcional)
+
+Para limpiar el repositorio Helm local y las imágenes de Docker en Minikube:
+
+```bash
+helm repo remove neuromotion
+```
+
+Para limpiar las imágenes de Docker en Minikube:
+
+```bash
+minikube ssh
+docker images | grep ms-usuarios # Puedes ajustar el filtro según las imágenes que quieras ver
+docker rmi mcabrerac/ms-doctores:v2
+docker rmi mcabrerac/ms-usuarios:v2
+docker rmi mcabrerac/neuromotion-frontend:v1
+exit
+```

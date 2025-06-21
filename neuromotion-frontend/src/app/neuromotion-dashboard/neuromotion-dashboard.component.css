@@ -17,9 +17,9 @@ h1 {
 h2 {
   color: #555;
   border-bottom: 2px solid #eee;
-  padding-bottom: 10px;
-  margin-top: 20px; /* Reduced margin-top */
-  margin-bottom: 10px; /* Reduced margin-bottom */
+  padding-bottom: 8px; /* Slightly reduced padding */
+  margin-top: 15px; /* Further reduced margin-top */
+  margin-bottom: 8px; /* Further reduced margin-bottom */
 }
 
 h3, h4 {
@@ -28,10 +28,10 @@ h3, h4 {
 
 .section {
   background-color: #fff;
-  padding: 20px;
+  padding: 15px; /* Reduced padding */
   border-radius: 8px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-  margin-bottom: 15px; /* Reduced margin-bottom */
+  margin-bottom: 10px; /* Further reduced margin-bottom */
 }
 
 .form-group {

@@ -5,33 +5,43 @@
       <button class="close-button" (click)="onClose()">×</button>
     </div>
     <div class="modal-body">
-      <div *ngIf="citas.length === 0; else citasTable">
-        <p>No hay citas registradas.</p>
+      <div class="search-container">
+        <input type="text" [(ngModel)]="searchTerm" (input)="onSearchChange()" placeholder="🔍 Búsqueda Global">
+      </div>
+
+      <div *ngIf="filteredCitas.length === 0; else citasTable">
+        <p>No hay citas registradas que coincidan con la búsqueda.</p>
       </div>
       <ng-template #citasTable>
-        <div class="table-scroll-container">
+        <div class="table-container">
           <table>
             <thead>
               <tr>
-                <th>ID</th>
-                <th>Usuario</th>
-                <th>Doctor</th>
-                <th>Especialidad del Doctor</th>
-                <th>Fecha y Hora</th>
-                <th>Motivo</th>
+                <th (click)="onSort('id')">ID <span *ngIf="sortColumn === 'id'">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span></th>
+                <th (click)="onSort('usuarioNombre')">Usuario <span *ngIf="sortColumn === 'usuarioNombre'">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span></th>
+                <th (click)="onSort('doctorNombre')">Doctor <span *ngIf="sortColumn === 'doctorNombre'">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span></th>
+                <th (click)="onSort('doctorEspecialidad')">Especialidad del Doctor <span *ngIf="sortColumn === 'doctorEspecialidad'">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span></th>
+                <th (click)="onSort('fechaHora')">Fecha y Hora <span *ngIf="sortColumn === 'fechaHora'">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span></th>
+                <th (click)="onSort('motivo')">Motivo <span *ngIf="sortColumn === 'motivo'">{{ sortDirection === 'asc' ? '▲' : '▼' }}</span></th>
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let cita of citas">
+              <tr *ngFor="let cita of filteredCitas">
                 <td>{{ cita.id }}</td>
                 <td>{{ cita.usuarioNombre }}</td>
                 <td>{{ cita.doctorNombre }}</td>
                 <td>{{ cita.doctorEspecialidad }}</td>
-                <td>{{ cita.fechaHora | date:'medium' }}</td>
+                <td>{{ cita.fechaHora | date:'dd/MM/yyyy HH:mm' }}</td>
                 <td>{{ cita.motivo }}</td>
               </tr>
             </tbody>
           </table>
+        </div>
+
+        <div class="pagination-controls">
+          <button (click)="prevPage()" [disabled]="currentPage === 1">Anterior</button>
+          <span *ngFor="let page of getPages()" (click)="goToPage(page)" [class.active]="page === currentPage">{{ page }}</span>
+          <button (click)="nextPage()" [disabled]="currentPage === totalPages">Siguiente</button>
         </div>
       </ng-template>
     </div>

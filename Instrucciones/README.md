@@ -141,7 +141,7 @@ curl http://localhost:8082/api/doctores/1
 curl -X POST -H "Content-Type: application/json" -d "{\"nombre\": \"Juan Perez\", \"licencia\": \"12345\", \"email\": \"juan@example.com\", \"especialidad\": {\"id\": 1}}" http://localhost:8082/api/doctores
 
 # Actualizar doctor
-curl -X PUT -H "Content-Type: application/json" -d "{\"nombre\": \"Juan Perez\", \"licencia\": \"12345\", \"email\": \"juan@example.com\", \"especialidad\": {\"id\": 1}}" http://localhost:8082/api/doctores/1
+curl -X PUT -H "Content-Type: application/json" -d "{\"nombre\": \"Juan Perez\", \"licencia\": \"54321\", \"email\": \"juanp@example.com\", \"especialidad\": {\"id\": 1}}" http://localhost:8082/api/doctores/1
 
 # Eliminar doctor
 curl -X DELETE http://localhost:8082/api/doctores/1

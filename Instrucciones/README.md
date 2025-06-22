@@ -105,3 +105,87 @@ docker rmi mcabrerac/ms-usuarios:v2
 docker rmi mcabrerac/neuromotion-frontend:v1
 exit
 ```
+
+---
+
+## 🧪 Endpoints de los microservicios
+
+### ms-doctores
+
+```bash
+# Port forward
+kubectl port-forward -n ms-app svc/ms-doctores-service 8082:8082
+
+# Listar especialidades
+curl http://localhost:8082/api/especialidades
+
+# Obtener especialidad por ID
+curl http://localhost:8082/api/especialidades/1
+
+# Crear especialidad
+curl -X POST -H "Content-Type: application/json" -d "{\"nombre\": \"Cardiología\"}" http://localhost:8082/api/especialidades
+
+# Actualizar especialidad
+curl -X PUT -H "Content-Type: application/json" -d "{\"nombre\": \"Cardiología Avanzada\"}" http://localhost:8082/api/especialidades/1
+
+# Eliminar especialidad
+curl -X DELETE http://localhost:8082/api/especialidades/1
+
+# Listar doctores
+curl http://localhost:8082/api/doctores
+
+# Obtener doctor por ID
+curl http://localhost:8082/api/doctores/1
+
+# Crear doctor
+curl -X POST -H "Content-Type: application/json" -d "{\"nombre\": \"Juan Perez\", \"licencia\": \"12345\", \"email\": \"juan@example.com\", \"especialidad\": {\"id\": 1}}" http://localhost:8082/api/doctores
+
+# Actualizar doctor
+curl -X PUT -H "Content-Type: application/json" -d "{\"nombre\": \"Juan Perez\", \"licencia\": \"12345\", \"email\": \"juan@example.com\", \"especialidad\": {\"id\": 1}}" http://localhost:8082/api/doctores/1
+
+# Eliminar doctor
+curl -X DELETE http://localhost:8082/api/doctores/1
+```
+
+### ms-usuarios
+
+```bash
+# Port forward
+kubectl port-forward -n ms-app svc/ms-usuarios-service 8081:8081
+
+# Listar usuarios
+curl http://localhost:8081/api/usuarios
+
+# Obtener usuario por ID
+curl http://localhost:8081/api/usuarios/1
+
+# Crear usuario
+curl -X POST -H "Content-Type: application/json" -d "{\"nombre\": \"Alexander\", \"apellido\": \"Gonzales\", \"email\": \"as.dsas@neuromotion.pe\", \"telefono\": \"987654321\"}" http://localhost:8081/api/usuarios
+
+# Actualizar usuario
+curl -X PUT -H "Content-Type: application/json" -d "{\"nombre\": \"Alexander R.\", \"apellido\": \"Gonzales\", \"email\": \"agonzales@neuromotion.pe\", \"telefono\": \"987654321\"}" http://localhost:8081/api/usuarios/1
+
+# Eliminar usuario
+curl -X DELETE http://localhost:8081/api/usuarios/1
+
+# Listar citas
+curl http://localhost:8081/api/citas
+
+# Obtener cita por ID
+curl http://localhost:8081/api/citas/1
+
+# Crear cita
+curl -X POST -H "Content-Type: application/json" -d "{\"fechaHora\": \"2025-06-25T15:30:00\", \"usuarioId\": 1, \"doctorId\": 2, \"motivo\": \"Consulta de terapia cognitiva\"}" http://localhost:8081/api/citas
+
+# Actualizar cita
+curl -X PUT -H "Content-Type: application/json" -d "{\"fechaHora\": \"2025-06-26T16:00:00\", \"usuarioId\": 1, \"doctorId\": 2, \"motivo\": \"Seguimiento de terapia\"}" http://localhost:8081/api/citas/1
+
+# Eliminar cita
+curl -X DELETE http://localhost:8081/api/citas/1
+```
+
+### Validar endpoints
+
+```bash
+# Ejecutar todos los comandos curl
+kubectl port-forward -n ms-app svc/ms-doctores-service 8082:8082 & kubectl port-forward -n ms-app svc/ms-usuarios-service 8081:8081 & sleep 10 & curl http://localhost:8082/api/especialidades & curl http://localhost:8081/api/usuarios

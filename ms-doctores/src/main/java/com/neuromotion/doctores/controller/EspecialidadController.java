@@ -9,6 +9,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -82,7 +83,11 @@ public class EspecialidadController {
             })
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminar(@PathVariable Long id) {
-        especialidadService.eliminar(id);
-        return ResponseEntity.noContent().build();
+        try {
+            especialidadService.eliminar(id);
+            return ResponseEntity.noContent().build();
+        } catch (ResponseStatusException ex) {
+            throw ex;
+        }
     }
 }

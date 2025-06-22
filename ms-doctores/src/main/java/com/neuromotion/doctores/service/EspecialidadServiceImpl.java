@@ -2,8 +2,11 @@ package com.neuromotion.doctores.service;
 
 import com.neuromotion.doctores.model.Especialidad;
 import com.neuromotion.doctores.repository.EspecialidadRepository;
+import com.neuromotion.doctores.repository.DoctorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,6 +16,9 @@ public class EspecialidadServiceImpl implements EspecialidadService {
 
     @Autowired
     private EspecialidadRepository especialidadRepository;
+
+    @Autowired
+    private DoctorRepository doctorRepository;
 
     @Override
     public List<Especialidad> listarTodas() {
@@ -48,6 +54,9 @@ public class EspecialidadServiceImpl implements EspecialidadService {
 
     @Override
     public void eliminar(Long id) {
+        if (doctorRepository.existsByEspecialidadId(id)) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "No se puede eliminar la especialidad porque está asociada a uno o más doctores.");
+        }
         especialidadRepository.deleteById(id);
     }
 }

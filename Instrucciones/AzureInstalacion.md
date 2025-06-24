@@ -46,7 +46,7 @@ az group create --name aks-resource-group --location brazilsouth
 **⚙️ Paso 3: Crear el clúster AKS**
 
 ```bash
-az aks create --resource-group aks-resource-group --name myAKSCluster --node-count 3 --enable-addons monitoring --generate-ssh-keys --location brazilsouth --node-vm-size Standard_D2s_v6
+az aks create --resource-group aks-resource-group --name myAKSCluster --node-count 2 --enable-addons monitoring --generate-ssh-keys --location brazilsouth --node-vm-size Standard_D2s_v6
 ```
 
 **🔑 Paso 4: Obtener las credenciales del clúster AKS**
@@ -86,11 +86,7 @@ helm install mysql-usuarios neuromotion/mysql-usuarios -n ms-app
 ```bash
 helm install ms-doctores neuromotion/ms-doctores -n ms-app; 
 
-helm upgrade ms-doctores neuromotion/ms-doctores -n ms-app --set replicaCount=1
-
 helm install ms-usuarios neuromotion/ms-usuarios -n ms-app
-
-helm upgrade ms-usuarios neuromotion/ms-usuarios -n ms-app --set replicaCount=1
 
 ```
 

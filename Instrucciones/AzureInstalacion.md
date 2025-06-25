@@ -2,11 +2,9 @@
 
 **Antes de comenzar, ingrese al Cloud Shell de Azure.**
 
-**🔑 Paso 0: Login to Azure**
+**🔑 Paso 0: Iniciar sesión en Azure Cloud Shell**
 
-```bash
-az login
-```
+Inicie sesión en su cuenta de Azure a través del portal web y seleccione la opción Cloud Shell. Este entorno ya tiene las herramientas necesarias preinstaladas y configuradas.
 
 **✅ Paso 1: Validar y Registrar los proveedores necesarios**
 
@@ -118,4 +116,5 @@ kubectl get svc neuromotion-frontend-service -n ms-app
 
 
 **Para Finalizar el cluster
+
 az aks stop --name myAKSCluster --resource-group aks-resource-group
